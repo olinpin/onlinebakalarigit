@@ -1,0 +1,23 @@
+{% extends './layout.html' %}
+
+{% block head %}
+<title>Rozvrh</title>
+<style>
+    li {
+        font-size: large;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<h1>Rozvrh z bakalářů do google kalendáře</h1>
+<form action="{% url 'rozvrh:index' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_ul }}
+    {% if form %}
+    <input type="submit">
+    {% endif %}
+</form>
+<h3>{{ worked }}</h3>
+{% endblock %}
+

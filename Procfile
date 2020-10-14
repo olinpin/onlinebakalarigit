@@ -1,0 +1,1 @@
+web: gunicorn OnlineBakalari.wsgi --log-file -
