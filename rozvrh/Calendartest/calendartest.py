@@ -8,6 +8,63 @@ from bs4 import BeautifulSoup
 import json
 import sys
 
+classes = [
+    "Český jazyk",
+    "Český jazyk a literatura",
+    "Anglický jazyk",
+    "Německý jazyk",
+    "Francouzský jazyk",
+    "Ruský jazyk",
+    "Občanská nauka",
+    "Základy společenských věd",
+    "Dějepis",
+    "Matematika",
+    "Fyzika",
+    "Fyzikální praktika",
+    "Biologie",
+    "Biologická praktika",
+    "Chemie",
+    "Chemická praktika",
+    "Zeměpis",
+    "Zeměpisná praktika",
+    "Přírodovědná praktika",
+    "Informatika a výpočetní technika",
+    "Hudební výchova",
+    "Výtvarná výchova",
+    "Tělesná výchova",
+
+    "Globální výchova",
+    "Vlastivědný seminář",
+    "Matematika s podporou ICT",
+    "Školní časopis",
+    "Literární praktikum",
+    
+    "Psaní na PC",
+    "Geometrické praktikum",
+    
+    "Matematický seminář",
+    "Chemický seminář",
+    "Biologický seminář",
+    "Fyzikální seminář",
+    "Deskriptivní geometrie",
+    "Zeměpisný seminář",
+    "Dějepisný seminář",
+    "Společenskovědní seminář",
+    "Sociologie a psychologie",
+    "Politologie a mezinárodní vztahy",
+    "Ekonomika podnikání",
+    "Konverzace z angličtiny",
+    "Konverzace z francouzštiny",
+    "Konverzace z němčiny",
+    "Aplikace Windows a programování",
+
+    "Literální seminář",
+    "Chemicko-biologická praktika",
+    "Biologie člověka a výchova ke zdraví",
+    "Konverzace z ruštiny",
+    "Fyzika pro lékařské fakulty",
+]
+
 def authorization():
     try:
         import argparse
@@ -140,11 +197,14 @@ def delete():
     
     for z in items:
         if z['status'] == 'confirmed':
-            print('deleted' + ' '+ z['summary'])
-        if z['status'] == 'cancelled':
+            if z['summary'] in classes:
+                print('deleted' + ' '+ z['summary'])
+                eventid = z['id']
+                event = CAL.events().delete(calendarId='primary', eventId=eventid).execute()
+            else:
+                continue
+        else:
             continue
-        eventid = z['id']
-        event = CAL.events().delete(calendarId='primary', eventId=eventid).execute()
 
 
 
