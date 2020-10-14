@@ -48,11 +48,9 @@ def getTimeTable(Name, Sem):
     r = requests.get(f"https://gym-nymburk.bakalari.cz/bakaweb/Timetable/public/Actual/Class/{ Name }")
     soup = BeautifulSoup(r.text, "html.parser")
     finder = soup.find_all('div', attrs={"class":'day-item-hover'})
-    i= 0
     delete()
     for x in finder:
-        data_detail = finder[i]['data-detail'].replace('null', '"Nothing"')
-        i = i+ 1
+        data_detail = x['data-detail'].replace('null', '"Nothing"')
         data_detail = eval(data_detail)
         subjecttext = data_detail['subjecttext']
         try:
@@ -127,6 +125,7 @@ def getTimeTable(Name, Sem):
 
         addCalendar(predmet, start, end, room, teacher)
         print(predmet, room, teacher, start) # start, end,
+    open('storage.json', 'r+').truncate()
 
 
 def delete():
@@ -138,14 +137,13 @@ def delete():
     now = now.split('.')[0] + 'Z'
     e = CAL.events().list(calendarId='primary', timeMin='2020-10-14T11:35:00Z').execute()
     items = e['items']
-    f=-1
+    
     for z in items:
-        f = f+1
-        print('deleted' + str(f))
-        if items[f]['status'] == 'cancelled':
+        if z['status'] == 'confirmed':
+            print('deleted' + ' '+ z['summary'])
+        if z['status'] == 'cancelled':
             continue
-        eventid = items[f]['id']
-        print(eventid)
+        eventid = z['id']
         event = CAL.events().delete(calendarId='primary', eventId=eventid).execute()
 
 
