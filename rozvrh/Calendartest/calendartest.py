@@ -66,7 +66,7 @@ classes = [
     "Konverzace z ruštiny",
     "Fyzika pro lékařské fakulty",
 ]
-oauth_callback = 'https://accounts.google.com/o/oauth2/auth?client_id=669046485288-hk0o6915jn4givcqe1bfiso29i7fle67.apps.googleusercontent.com&redirect_uri=https:%2f%2fbakalaricz.herokuapp.com%2Frozvrh%2F&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&access_type=offline&response_type=code'
+#$oauth_callback = 'https://accounts.google.com/o/oauth2/auth?client_id=669046485288-hk0o6915jn4givcqe1bfiso29i7fle67.apps.googleusercontent.com&redirect_uri=https:%2f%2fbakalaricz.herokuapp.com%2Frozvrh%2F&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&access_type=offline&response_type=code'
 
 def authorization():
     try:
