@@ -20,10 +20,10 @@ def addCalendar(predmet, start, end, room, about):
     SCOPES = 'https://www.googleapis.com/auth/calendar'
     store = file.Storage('storage.json')
     creds = store.get()
-    #if not creds or creds.invalid:
-    flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
-    creds = tools.run_flow(flow, store, flags) \
-        if flags else tools.run(flow, store)
+    if not creds or creds.invalid:
+        flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
+        creds = tools.run_flow(flow, store, flags) \
+            if flags else tools.run(flow, store)
     CAL = build('calendar', 'v3', http=creds.authorize(Http()))
 
     GMT_OFF = "-01:00"
@@ -122,13 +122,12 @@ def getTimeTable(Name, Sem):
             continue
 
         addCalendar(predmet, start, end, room, teacher)
-        print(predmet, room, teacher) # start, end,
+        print(predmet, room, teacher, start) # start, end,
 
 
 def delete():
     try:
         import argparse
-        print(sys.argv)
         #flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
         flags = tools.argparser.parse_args([])
     except ImportError:
@@ -138,22 +137,25 @@ def delete():
     store = file.Storage('storage.json')
     creds = store.get()
     if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('./rozvrh/client_secret.json', SCOPES)
+        flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
         creds = tools.run_flow(flow, store, flags) \
             if flags else tools.run(flow, store)
+        
+
     CAL = build('calendar', 'v3', http=creds.authorize(Http()))
 
-    now = datetime.datetime.utcnow().isoformat()
+    now = datetime.datetime.now().isoformat()
     now = now.split('.')[0] + 'Z'
-    e = CAL.events().list(calendarId='primary', timeMin=now).execute()
+    e = CAL.events().list(calendarId='primary', timeMin='2020-10-14T11:35:00Z').execute()
     items = e['items']
     f=-1
     for z in items:
         f = f+1
-        print(f)
+        print('deleted' + str(f))
         if items[f]['status'] == 'cancelled':
             continue
         eventid = items[f]['id']
+        print(eventid)
         event = CAL.events().delete(calendarId='primary', eventId=eventid).execute()
 
 
