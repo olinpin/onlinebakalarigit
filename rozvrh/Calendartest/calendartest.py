@@ -79,7 +79,7 @@ def authorization():
     SCOPES = 'https://www.googleapis.com/auth/calendar'
     store = file.Storage('storage.json')
     creds = store.get()
-    webbrowser.open(oauth_callback)
+    #webbrowser.open(oauth_callback)
     print('opened')
     if not creds or creds.invalid:
         flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
