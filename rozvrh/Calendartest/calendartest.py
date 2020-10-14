@@ -8,8 +8,7 @@ from bs4 import BeautifulSoup
 import json
 import sys
 
-
-def addCalendar(predmet, start, end, room, about):
+def authorization():
     try:
         import argparse
         #flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
@@ -23,9 +22,14 @@ def addCalendar(predmet, start, end, room, about):
     if not creds or creds.invalid:
         flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
         creds = tools.run_flow(flow, store, flags) \
-            if flags else tools.run(flow, store)
-    CAL = build('calendar', 'v3', http=creds.authorize(Http()))
+            if flags else tools.run(flow, store)    
+    
 
+def addCalendar(predmet, start, end, room, about):
+    authorization()
+    store = file.Storage('storage.json')
+    creds = store.get()
+    CAL = build('calendar', 'v3', http=creds.authorize(Http()))
     GMT_OFF = "-01:00"
     EVENT = {
         'summary': f"{predmet}",
@@ -126,24 +130,10 @@ def getTimeTable(Name, Sem):
 
 
 def delete():
-    try:
-        import argparse
-        #flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-        flags = tools.argparser.parse_args([])
-    except ImportError:
-        flags = None
-
-    SCOPES = 'https://www.googleapis.com/auth/calendar'
+    authorization()
     store = file.Storage('storage.json')
     creds = store.get()
-    if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
-        creds = tools.run_flow(flow, store, flags) \
-            if flags else tools.run(flow, store)
-        
-
     CAL = build('calendar', 'v3', http=creds.authorize(Http()))
-
     now = datetime.datetime.now().isoformat()
     now = now.split('.')[0] + 'Z'
     e = CAL.events().list(calendarId='primary', timeMin='2020-10-14T11:35:00Z').execute()
