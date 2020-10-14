@@ -85,6 +85,8 @@ gender = [
     ("Chl", "Chlapec"),
     ("Dív", "Dívka"),
 ]
+
+
 # Create your views here.
 class RozvrhForm(forms.Form):
     trida = forms.ChoiceField(choices=classes, label="Třída")
@@ -110,6 +112,7 @@ def index(request):
             skupina = form.cleaned_data['skupina']
             gender = form.cleaned_data["gender"]
             PList = [aj, jazyk2, Sem1, Sem2, Sem3, skupina, gender, '']
+        authorization()
         getTimeTable(trida, PList)
         return render(request, "rozvrh/index.html", {
             'worked': "Vaše hodiny jsou ve vašem google kalendáři."

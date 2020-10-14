@@ -7,6 +7,8 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import sys
+import webbrowser
+
 
 classes = [
     "Český jazyk",
@@ -64,6 +66,7 @@ classes = [
     "Konverzace z ruštiny",
     "Fyzika pro lékařské fakulty",
 ]
+oauth_callback = 'https://accounts.google.com/o/oauth2/auth?client_id=669046485288-hk0o6915jn4givcqe1bfiso29i7fle67.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8090%2F&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&access_type=offline&response_type=code'
 
 def authorization():
     try:
@@ -76,10 +79,12 @@ def authorization():
     SCOPES = 'https://www.googleapis.com/auth/calendar'
     store = file.Storage('storage.json')
     creds = store.get()
+    webbrowser.open(oauth_callback)
+    print('opened')
     if not creds or creds.invalid:
         flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
         creds = tools.run_flow(flow, store, flags) \
-            if flags else tools.run(flow, store)    
+            if flags else tools.run(flow, store)          
     
 
 def addCalendar(predmet, start, end, room, about):
