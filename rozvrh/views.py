@@ -126,3 +126,6 @@ def greet(request, name):
     return render(request, "rozvrh/greet.html", {
         'name': name.capitalize()
     })                               
+
+def PrivacyPolicy(request):
+    return render(request, "rozvrh/privacy_policy.html")
