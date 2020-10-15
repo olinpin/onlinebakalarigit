@@ -9,6 +9,8 @@ import json
 import sys
 import webbrowser
 
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
 
 classes = [
     "Český jazyk",
@@ -69,7 +71,7 @@ classes = [
 #$oauth_callback = 'https://accounts.google.com/o/oauth2/auth?client_id=669046485288-hk0o6915jn4givcqe1bfiso29i7fle67.apps.googleusercontent.com&redirect_uri=https:%2f%2fbakalaricz.herokuapp.com%2Frozvrh%2F&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&access_type=offline&response_type=code'
 
 def authorization():
-    try:
+    """try:
         import argparse
         #flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
         flags = tools.argparser.parse_args([])
@@ -80,11 +82,13 @@ def authorization():
     store = file.Storage('storage.json')
     creds = store.get()
     #webbrowser.open(oauth_callback)
-    print('opened')
     if not creds or creds.invalid:
         flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
         creds = tools.run_flow(flow, store, flags) \
-            if flags else tools.run(flow, store)          
+            if flags else tools.run(flow, store) """  
+    SCOPES = 'https://www.googleapis.com/auth/calendar'
+    flow = Flow.from_client_secrets_file('client_secret.json', SCOPES )
+    auth_uri = flow.authorization_url()
     
 
 def addCalendar(predmet, start, end, room, about):
@@ -191,7 +195,11 @@ def getTimeTable(Name, Sem):
 
 
 def delete():
-    authorization()
+    #authorization()
+    #SCOPES = 'https://www.googleapis.com/auth/calendar'
+    #flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES)
+    #flow.redirect_uri = 'http://localhost'
+    #authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes="true")
     store = file.Storage('storage.json')
     creds = store.get()
     CAL = build('calendar', 'v3', http=creds.authorize(Http()))

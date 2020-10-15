@@ -1,9 +1,14 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django import forms
 from oauth2client import file, client, tools
 
 from .Calendartest.calendartest import * # import getTimeTable, addCalendar, delete
+
+
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
+
 
 
 classes = [
@@ -112,8 +117,13 @@ def index(request):
             skupina = form.cleaned_data['skupina']
             gender = form.cleaned_data["gender"]
             PList = [aj, jazyk2, Sem1, Sem2, Sem3, skupina, gender, '']
-        authorization()
-        getTimeTable(trida, PList)
+        SCOPES = 'https://www.googleapis.com/auth/calendar'
+        flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES)
+        flow.redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/'
+        authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes="true")
+        return HttpResponseRedirect(authorization_url)
+        #getTimeTable(trida, PList)
+        print('Im working')
         return render(request, "rozvrh/index.html", {
             'worked': "Vaše hodiny jsou ve vašem google kalendáři."
         })
