@@ -7,11 +7,47 @@
         font-size: large;
     }
 </style>
+<script>
+    if (!localStorage.getItem('PList')){
+        localStorage.setItem('PList', 'f')
+    }
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        var PList = localStorage.getItem('PList')
+        if (PList.length > 1) {
+            PList = JSON.parse(PList)
+            document.querySelector('#id_trida').value = PList.trida;
+            document.querySelector('#id_aj').value = PList.aj;
+            document.querySelector('#id_jazyk2').value = PList.jazyk2;
+            document.querySelector('#id_Sem1').value = PList.Sem1;
+            document.querySelector('#id_Sem2').value = PList.Sem2;
+            document.querySelector('#id_Sem3').value = PList.Sem3;
+            document.querySelector('#id_skupina').value = PList.skupina;
+            document.querySelector('#id_gender').value = PList.gender;
+        }
+
+
+        document.querySelector('#form').onsubmit = () => {
+            const trida = document.querySelector('#id_trida').value;
+            const aj = document.querySelector('#id_aj').value;
+            const jazyk2 = document.querySelector('#id_jazyk2').value;
+            const Sem1 = document.querySelector('#id_Sem1').value;
+            const Sem2 = document.querySelector('#id_Sem2').value;
+            const Sem3 = document.querySelector('#id_Sem3').value;
+            const skupina = document.querySelector('#id_skupina').value;
+            const gender = document.querySelector('#id_gender').value;
+            PList = {'trida': trida, 'aj': aj, 'jazyk2': jazyk2, 'Sem1': Sem1, 'Sem2': Sem2, 'Sem3': Sem3, 'skupina': skupina, 'gender': gender}
+            PList = JSON.stringify(PList)
+            localStorage.setItem('PList', PList)
+        };
+    });
+</script>
 {% endblock %}
 
 {% block body %}
 <h1>Rozvrh z bakalářů do google kalendáře</h1>
-<form action="{% url 'rozvrh:index' %}" method="POST">
+<form action="{% url 'rozvrh:index' %}" method="POST" id="form">
     {% csrf_token %}
     {{ form.as_ul }}
     {% if form %}

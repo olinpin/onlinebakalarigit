@@ -117,20 +117,42 @@ def index(request):
             skupina = form.cleaned_data['skupina']
             gender = form.cleaned_data["gender"]
             PList = [aj, jazyk2, Sem1, Sem2, Sem3, skupina, gender, '']
+            request.session['trida'] = trida
+            request.session['PList'] = PList
+        print(request.session['PList'])
         SCOPES = 'https://www.googleapis.com/auth/calendar'
         flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES)
-        flow.redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/'
+        flow.redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
         authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes="true")
         return HttpResponseRedirect(authorization_url)
-        #getTimeTable(trida, PList)
-        print('Im working')
-        return render(request, "rozvrh/index.html", {
-            'worked': "Vaše hodiny jsou ve vašem google kalendáři."
-        })
+    
     return render(request, "rozvrh/index.html", {
-        "form": RozvrhForm(),
+        "form": RozvrhForm(), 
         'worked': ""
     })
+def rozvrhAdd(request):
+    print(request)
+    PList = request.session['PList']
+    trida = request.session['trida']
+    authorization_response = request.build_absolute_uri()
+    #authorization_response = authorization_response.replace('http', 'https')
+    print(authorization_response)
+    #authorization_response = 'https://bakalaricz.herokuapp.com/rozvrh/form' + authorization_response
+    SCOPES = 'https://www.googleapis.com/auth/calendar'
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES)
+    flow.fetch_token(authorization_response=authorization_response)
+    creds = flow.credentials
+    request.session['creds'] = {
+        'token': creds.token,
+        'refresh_token': creds.refresh_token,
+        'token_uri': creds.token_uri,
+        'client_id': creds.client_id,
+        'client_secret': creds.client_secret,
+        'scopes': creds.scopes
+    }
+    #getTimeTable(trida, PList)
+    print('Im working')
+    return render(request, "rozvrh/rozvrh.html")
 
 def greet(request, name):
     return render(request, "rozvrh/greet.html", {
