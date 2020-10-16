@@ -130,7 +130,7 @@ def index(request):
             request.session['state'] = state
             return HttpResponseRedirect(authorization_url)
         else:
-            return redirect('/form')
+            return redirect('/rozvrh/form')
     
     return render(request, "rozvrh/index.html", {
         "form": RozvrhForm(), 
