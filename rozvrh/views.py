@@ -124,7 +124,7 @@ def index(request):
         if 'creds' not in request.session:
             SCOPES = 'https://www.googleapis.com/auth/calendar'
             flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES)
-            flow.redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
+            flow.redirect_uri = "https://bakalaricz.herokuapp.com/rozvrh/form"
             authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes="true")
             request.session['state'] = state
             return HttpResponseRedirect(authorization_url)
