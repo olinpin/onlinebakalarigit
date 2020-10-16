@@ -142,7 +142,8 @@ def rozvrhAdd(request):
     state = request.session['state']
     authorization_response = request.build_absolute_uri()
     SCOPES = 'https://www.googleapis.com/auth/calendar'
-    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES, state=state)
+    redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES, state=state, redirect_uri=redirect_uri)
     flow.fetch_token(authorization_response=authorization_response)
     print('redirected')
     flow.redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
