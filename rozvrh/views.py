@@ -121,16 +121,15 @@ def index(request):
             request.session['trida'] = trida
             request.session['PList'] = PList
         print(request.session['PList'])
-        if 'creds' not in request.session:
-            SCOPES = 'https://www.googleapis.com/auth/calendar'
-            redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
-            flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES, redirect_uri=redirect_uri)
-            flow.redirect_uri = "https://bakalaricz.herokuapp.com/rozvrh/form"
-            authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes="true")
-            request.session['state'] = state
-            return HttpResponseRedirect(authorization_url)
-        else:
-            return redirect('/rozvrh/form')
+        #if 'creds' not in request.session:
+        SCOPES = 'https://www.googleapis.com/auth/calendar'
+        redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
+        flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES, redirect_uri=redirect_uri)
+        flow.redirect_uri = "https://bakalaricz.herokuapp.com/rozvrh/form"
+        authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes="true")
+        request.session['state'] = state
+        return HttpResponseRedirect(authorization_url)
+
     
     return render(request, "rozvrh/index.html", {
         "form": RozvrhForm(), 
