@@ -156,8 +156,7 @@ def rozvrhAdd(request):
         'client_secret': creds.client_secret,
         'scopes': creds.scopes
     }
-
-    #getTimeTable(trida, PList, request.session['creds'])
+    getTimeTable(trida, PList, request.session['creds'])
     print('Im working')
     return render(request, "rozvrh/rozvrh.html")
 
