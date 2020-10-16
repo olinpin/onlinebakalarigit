@@ -141,9 +141,7 @@ def rozvrhAdd(request):
     trida = request.session['trida']
     state = request.session['state']
     authorization_response = request.build_absolute_uri()
-    #authorization_response = authorization_response.replace('http', 'https')
-    print(authorization_response)
-    #authorization_response = 'https://bakalaricz.herokuapp.com/rozvrh/form' + authorization_response
+    flow.redirect_uri = authorization_response
     SCOPES = 'https://www.googleapis.com/auth/calendar'
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES)
     flow.fetch_token(authorization_response=authorization_response)
