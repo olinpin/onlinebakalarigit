@@ -73,7 +73,7 @@ classes = [
 
 def addCalendar(predmet, start, end, room, about, creds):
     print(creds)
-    CAL = build('calendar', 'v3', http=creds.authorize(Http()))
+    CAL = build('calendar', 'v3', credentials=creds)#http=creds.authorize(Http()))
     GMT_OFF = "-01:00"
     EVENT = {
         'summary': f"{predmet}",
