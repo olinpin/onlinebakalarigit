@@ -69,31 +69,9 @@ classes = [
     "Fyzika pro lékařské fakulty",
 ]
 
-def authorization():
-    """try:
-        import argparse
-        #flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-        flags = tools.argparser.parse_args([])
-    except ImportError:
-        flags = None
+   
 
-    SCOPES = 'https://www.googleapis.com/auth/calendar'
-    store = file.Storage('storage.json')
-    creds = store.get()
-    #webbrowser.open(oauth_callback)
-    if not creds or creds.invalid:
-        flow = client.flow_from_clientsecrets('client_secret.json', SCOPES)
-        creds = tools.run_flow(flow, store, flags) \
-            if flags else tools.run(flow, store) """  
-    SCOPES = 'https://www.googleapis.com/auth/calendar'
-    flow = Flow.from_client_secrets_file('client_secret.json', SCOPES )
-    auth_uri = flow.authorization_url()
-    
-
-def addCalendar(predmet, start, end, room, about):
-    authorization()
-    store = file.Storage('storage.json')
-    creds = store.get()
+def addCalendar(predmet, start, end, room, about, creds):
     CAL = build('calendar', 'v3', http=creds.authorize(Http()))
     GMT_OFF = "-01:00"
     EVENT = {
@@ -108,12 +86,12 @@ def addCalendar(predmet, start, end, room, about):
     
 
 
-def getTimeTable(Name, Sem):
+def getTimeTable(Name, Sem, creds):
     print(Name)
     r = requests.get(f"https://gym-nymburk.bakalari.cz/bakaweb/Timetable/public/Actual/Class/{ Name }")
     soup = BeautifulSoup(r.text, "html.parser")
     finder = soup.find_all('div', attrs={"class":'day-item-hover'})
-    delete()
+    #delete(creds)
     for x in finder:
         data_detail = x['data-detail'].replace('null', '"Nothing"')
         data_detail = eval(data_detail)
@@ -188,14 +166,11 @@ def getTimeTable(Name, Sem):
             print(predmet, "SKIPPED")
             continue
 
-        addCalendar(predmet, start, end, room, teacher)
-        print(predmet, room, teacher, start) # start, end,
-    open('storage.json', 'r+').truncate()
+    addCalendar(predmet, start, end, room, teacher, creds)
+    print(predmet, room, teacher, start) # start, end,
 
 
-def delete():
-    store = file.Storage('storage.json')
-    creds = store.get()
+def delete(creds):
     CAL = build('calendar', 'v3', http=creds.authorize(Http()))
     now = datetime.datetime.now().isoformat()
     now = now.split('.')[0] + 'Z'

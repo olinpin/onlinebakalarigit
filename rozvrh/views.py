@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django import forms
 from oauth2client import file, client, tools
 
@@ -121,11 +121,15 @@ def index(request):
             request.session['trida'] = trida
             request.session['PList'] = PList
         print(request.session['PList'])
-        SCOPES = 'https://www.googleapis.com/auth/calendar'
-        flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES)
-        flow.redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
-        authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes="true")
-        return HttpResponseRedirect(authorization_url)
+        if 'creds' not in request.session:
+            SCOPES = 'https://www.googleapis.com/auth/calendar'
+            flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES)
+            flow.redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
+            authorization_url, state = flow.authorization_url(access_type='offline', include_granted_scopes="true")
+            request.session['state'] = state
+            return HttpResponseRedirect(authorization_url)
+        else:
+            return redirect('/form')
     
     return render(request, "rozvrh/index.html", {
         "form": RozvrhForm(), 
@@ -135,6 +139,7 @@ def rozvrhAdd(request):
     print(request)
     PList = request.session['PList']
     trida = request.session['trida']
+    state = request.session['state']
     authorization_response = request.build_absolute_uri()
     #authorization_response = authorization_response.replace('http', 'https')
     print(authorization_response)
@@ -151,7 +156,8 @@ def rozvrhAdd(request):
         'client_secret': creds.client_secret,
         'scopes': creds.scopes
     }
-    #getTimeTable(trida, PList)
+
+    #getTimeTable(trida, PList, request.session['creds'])
     print('Im working')
     return render(request, "rozvrh/rozvrh.html")
 
