@@ -84,7 +84,8 @@ def addCalendar(predmet, start, end, room, about, creds):
         'description': f'{about}',
     }
 
-    e = CAL.events().insert(calendarId='primary', body=EVENT).execute()
+    e = CAL.events().list().execute()
+    print(e)
     
 
 
