@@ -99,7 +99,7 @@ def getTimeTable(Name, Sem, creds):
     r = requests.get(f"https://gym-nymburk.bakalari.cz/bakaweb/Timetable/public/Actual/Class/{ Name }")
     soup = BeautifulSoup(r.text, "html.parser")
     finder = soup.find_all('div', attrs={"class":'day-item-hover'})
-    #delete(creds)
+    delete(creds)
     for x in finder:
         data_detail = x['data-detail'].replace('null', '"Nothing"')
         data_detail = eval(data_detail)
@@ -179,7 +179,14 @@ def getTimeTable(Name, Sem, creds):
 
 
 def delete(creds):
-    CAL = build('calendar', 'v3', http=creds.authorize(Http()))
+    credentials = google.oauth2.credentials.Credentials(
+        creds["token"],
+        refresh_token = creds["refresh_token"],
+        token_uri = creds["token_uri"],
+        client_id = creds["client_id"],
+        client_secret = creds["client_secret"],
+        scopes = creds["scopes"])
+    CAL = build('calendar', 'v3', credentials=credentials)
     now = datetime.datetime.now().isoformat()
     now = now.split('.')[0] + 'Z'
     e = CAL.events().list(calendarId='primary', timeMin='2020-10-14T11:35:00Z').execute()
