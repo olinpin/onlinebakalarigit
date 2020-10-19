@@ -73,7 +73,13 @@ classes = [
 
 def addCalendar(predmet, start, end, room, about, creds):
     print(creds)
-    credentials = google.oauth2.credentials.Credentials(creds)
+    credentials = google.oauth2.credentials.Credentials(
+        creds["token"],
+        refresh_token = creds["refresh_token"],
+        token_uri = creds["token_uri"],
+        client_id = creds["client_id"],
+        client_secret = creds["client_secret"],
+        scopes = creds["scopes"])
     CAL = build('calendar', 'v3', credentials=credentials)
     GMT_OFF = "-01:00"
     EVENT = {
@@ -84,8 +90,7 @@ def addCalendar(predmet, start, end, room, about, creds):
         'description': f'{about}',
     }
 
-    e = CAL.events().list(calendarId='primary').execute()
-    print(e)
+    e = CAL.events().insert(calendarId='primary', body=EVENT).execute()
     
 
 
