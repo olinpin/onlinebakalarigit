@@ -174,8 +174,8 @@ def getTimeTable(Name, Sem, creds):
             print(predmet, "SKIPPED")
             continue
 
-    addCalendar(predmet, start, end, room, teacher, creds)
-    print(predmet, room, teacher, start) # start, end,
+        addCalendar(predmet, start, end, room, teacher, creds)
+        print(predmet, room, teacher, start) # start, end,
 
 
 def delete(creds):
