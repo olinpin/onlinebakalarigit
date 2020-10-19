@@ -1,5 +1,5 @@
 from __future__ import print_function
-import googleapiclient
+from apiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 import datetime
@@ -73,7 +73,7 @@ classes = [
 
 def addCalendar(predmet, start, end, room, about, creds):
     print(creds)
-    CAL = googleapiclient.discovery.build('calendar', 'v3', credentials=creds)
+    CAL = build('calendar', 'v3', credentials=creds)
     GMT_OFF = "-01:00"
     EVENT = {
         'summary': f"{predmet}",

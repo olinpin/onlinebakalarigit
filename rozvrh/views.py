@@ -148,6 +148,7 @@ def rozvrhAdd(request):
     print('redirected')
     flow.redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
     creds = flow.credentials
+    print(creds)
     request.session['creds'] = {
         'token': creds.token,
         'refresh_token': creds.refresh_token,
