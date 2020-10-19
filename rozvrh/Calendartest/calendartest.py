@@ -72,7 +72,6 @@ classes = [
    
 
 def addCalendar(predmet, start, end, room, about, creds):
-    print(creds)
     credentials = google.oauth2.credentials.Credentials(
         creds["token"],
         refresh_token = creds["refresh_token"],
@@ -95,7 +94,6 @@ def addCalendar(predmet, start, end, room, about, creds):
 
 
 def getTimeTable(Name, Sem, creds):
-    print(Name)
     r = requests.get(f"https://gym-nymburk.bakalari.cz/bakaweb/Timetable/public/Actual/Class/{ Name }")
     soup = BeautifulSoup(r.text, "html.parser")
     finder = soup.find_all('div', attrs={"class":'day-item-hover'})

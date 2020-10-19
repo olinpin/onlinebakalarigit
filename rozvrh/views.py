@@ -136,7 +136,6 @@ def index(request):
         'worked': ""
     })
 def rozvrhAdd(request):
-    print(request)
     PList = request.session['PList']
     trida = request.session['trida']
     state = request.session['state']
@@ -145,10 +144,8 @@ def rozvrhAdd(request):
     redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES, state=state, redirect_uri=redirect_uri)
     flow.fetch_token(authorization_response=authorization_response)
-    print('redirected')
     flow.redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
     creds = flow.credentials
-    print(creds)
     request.session['creds'] = {
         'token': creds.token,
         'refresh_token': creds.refresh_token,
@@ -158,7 +155,6 @@ def rozvrhAdd(request):
         'scopes': creds.scopes
     }
     getTimeTable(trida, PList, request.session['creds'])
-    print('Im working')
     return render(request, "rozvrh/rozvrh.html")
 
 def greet(request, name):
