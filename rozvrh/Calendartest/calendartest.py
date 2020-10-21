@@ -187,7 +187,7 @@ def delete(creds):
     CAL = build('calendar', 'v3', credentials=credentials)
     now = datetime.datetime.now().isoformat()
     now = now.split('.')[0] + 'Z'
-    e = CAL.events().list(calendarId='primary', timeMin='2020-10-14T11:35:00Z').execute()
+    e = CAL.events().list(calendarId='primary', timeMin=now).execute()
     items = e['items']
     
     for z in items:

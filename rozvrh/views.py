@@ -95,7 +95,7 @@ gender = [
 
 # Create your views here.
 class RozvrhForm(forms.Form):
-    trida = forms.ChoiceField(choices=classes, label="Třída")
+    trida = forms.ChoiceField(choices=classes, label="Třída", widget=forms.TextInput(attrs={'class': 'bk-timetable-label'}))
     aj = forms.ChoiceField(choices=aj, label="Jazyková skupina")
     jazyk2 = forms.ChoiceField(choices=jazyk, label="Cizí jazyková skupina")
     Sem1 = forms.ChoiceField(choices=Sem1, label="První seminář")
