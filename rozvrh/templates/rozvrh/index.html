@@ -102,12 +102,12 @@
     }
     document.addEventListener("DOMContentLoaded", () => {
         var PList = localStorage.getItem('PList');
-        hide()
+        
         if (PList.length > 1) {
             PList = JSON.parse(PList)
             load(PList)
-
         }
+        hide()
 
 
         document.querySelector('#form').onsubmit = () => {
