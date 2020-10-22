@@ -160,7 +160,8 @@ def getTimeTable(Name, Sem, creds):
         
         if type(room) == int:
             room = "Učebna " + str(room)
-        now = datetime.datetime.utcnow().isoformat()
+        now = datetime.datetime.utcnow() + datetime.timedelta(hours=2)
+        now = now.isoformat()
         now = now.split('.')[0]
         now = now.split("T")
         datenow = now[0]
