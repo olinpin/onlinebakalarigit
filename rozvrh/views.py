@@ -47,22 +47,27 @@ jazyk = [
     ("nej1", "nej1"),
     ("nej2", "nej2"),
     ("nej3", "nej3"),
+    ("nej4", "nej4"),
     ("frj1", "frj1"),
     ("frj2", "frj2"),
     ("frj3", "frj3"),
     ("ruj", "ruj"),
+    ("ruj1", "ruj1"),
+    ("ruj2", "ruj2"),
 ]
-Sem1 = [
+SemS1 = [
     (" ", "Žádný"),
     ("zes1", "zes1"),
     ("chs1", "chs1"),
     ("fys1", "fys1"),
     ("sps1", "sps1"),
     ("bi1A", "bi1A"),
+    ("bi1B", "bi1B"),
     ("des1", "des1"),
     ("eps1", "eps1"),
+    ("kan1", "kan1"),
 ]
-Sem2 = [
+SemS2 = [
     (" ", "Žádný"),
     ("svs2", "svs2"),
     ("fys2", "fys2"),
@@ -72,7 +77,7 @@ Sem2 = [
     ("bis2", "bis2"),
     ("aw2", "aw2"),
 ]
-Sem3 = [
+SemS3 = [
     (" ", "Žádný"),
     ("chs3", "chs3"),
     ("ps2", "ps2"),
@@ -80,6 +85,47 @@ Sem3 = [
     ("sps3", "sps3"),
     ("eps3", "eps3"),
     ("kaz3", "kaz3"),
+    ("dgs5", "dgs5"),
+    ("ps3", "ps3"),
+]
+SemO4 = [
+    (" ", "Žádná"),
+    ("fsm4", "fsm4"),
+    ("biv4", "biv4"),
+    ("pss4", "pss4"),
+    ("mvs4", "mvs4"),
+    ("fis4", "fis4"),
+    ("kaz4", "kaz4"),
+]
+SemO3 = [
+    (" ", "Žádný"),
+    ("psA3", "psA3"),
+    ("biv3", "biv3"),
+    ("psB3", "psB3"),
+    ("anA3", "anA3"),
+    ("msB3", "msB3"),
+    ("dgs5", "dgs5"),
+    ("anB3", "anB3"),
+]
+SemO1 = [
+    (" ", "Žádná"),
+    ("svs1", "svs1"),
+    ("eps1", "eps1"),
+    ("bis1", "bis1"),
+    ("des1", "des1"),
+    ("lis1", "lis1"),
+    ("mas1", "mas1"),
+]
+SemO2 = [
+    (" ", "Žádná"),
+    ("chs2", "chs2"),
+    ("svs2", "svs2"),
+    ("bis2", "bis2"),
+    ("fys2", "fys2"),
+    ("zes2", "zes2"),
+    ("pro2", "pro2"),
+    ("lis2", "lis2"),
+    ("eps2", "eps2"),
 ]
 skupina = [
     (" ", "Žádná"),
@@ -91,16 +137,43 @@ gender = [
     ("Chl", "Chlapec"),
     ("Dív", "Dívka"),
 ]
-
+volitelne1 = [
+    (" ", "Žádná"),
+    ("mic", "mic"),
+    ("vls", "vls"),
+    ("skc", "skc"),
+    ("ppc", "ppc"),
+    ("gep", "gep"),
+]
+volitelne2 = [
+    (" ", "Žádná"),
+    ("mic", "mic"),
+    ("vls", "vls"),
+    ("skc", "skc"),
+    ("ppc", "ppc"),
+    ("gep", "gep"),
+]
+volitelne3 = [
+    (" ", "Žádná"),
+    ("dbkn", "dbkn"),
+    ("desn", "desn"),
+]
 
 # Create your views here.
 class RozvrhForm(forms.Form):
     trida = forms.ChoiceField(choices=classes, label="Třída")
     aj = forms.ChoiceField(choices=aj, label="Jazyková skupina")
     jazyk2 = forms.ChoiceField(choices=jazyk, label="Cizí jazyková skupina")
-    Sem1 = forms.ChoiceField(choices=Sem1, label="První seminář")
-    Sem2 = forms.ChoiceField(choices=Sem2, label="Druhý seminář")
-    Sem3 = forms.ChoiceField(choices=Sem3, label="Třetí seminář")
+    volitelne1 = forms.ChoiceField(choices=volitelne1, label="Volitelné předměty 1")
+    volitelne2 = forms.ChoiceField(choices=volitelne2, label="Volitelné předměty 2")
+    volitelne3 = forms.ChoiceField(choices=volitelne3, label="Volitelné předměty 3")
+    SemS1 = forms.ChoiceField(choices=SemS1, label="První seminář")
+    SemS2 = forms.ChoiceField(choices=SemS2, label="Druhý seminář")
+    SemS3 = forms.ChoiceField(choices=SemS3, label="Třetí seminář")
+    SemO1 = forms.ChoiceField(choices=SemO1, label="První seminář")
+    SemO2 = forms.ChoiceField(choices=SemO2, label="Druhý seminář")
+    SemO3 = forms.ChoiceField(choices=SemO3, label="Třetí seminář")
+    SemO4 = forms.ChoiceField(choices=SemO4, label="Čtvrtý seminář")
     skupina = forms.ChoiceField(choices=skupina, label="Skupina")
     gender = forms.ChoiceField(choices=gender, label="Pohlaví")
 
@@ -112,12 +185,19 @@ def index(request):
             trida = form.cleaned_data['trida']
             aj = form.cleaned_data['aj']
             jazyk2 = form.cleaned_data['jazyk2']
-            Sem1 = form.cleaned_data['Sem1']
-            Sem2 = form.cleaned_data['Sem2']
-            Sem3 = form.cleaned_data['Sem3']
+            SemS1 = form.cleaned_data['SemS1']
+            SemS2 = form.cleaned_data['SemS2']
+            SemS3 = form.cleaned_data['SemS3']
+            SemO1 = form.cleaned_data['SemO1']
+            SemO2 = form.cleaned_data['SemO2']
+            SemO3 = form.cleaned_data['SemO3']
+            SemO4 = form.cleaned_data['SemO4']
+            volitelne1 = form.cleaned_data['volitelne1']
+            volitelne2 = form.cleaned_data['volitelne2']
+            volitelne3 = form.cleaned_data['volitelne3']
             skupina = form.cleaned_data['skupina']
             gender = form.cleaned_data["gender"]
-            PList = [aj, jazyk2, Sem1, Sem2, Sem3, skupina, gender, '']
+            PList = [aj, jazyk2, SemS1, SemS2, SemS3, SemO1, SemO2, SemO3, SemO4, volitelne1, volitelne2, volitelne3, skupina, gender, '']
             request.session['trida'] = trida
             request.session['PList'] = PList
         print(request.session['PList'])

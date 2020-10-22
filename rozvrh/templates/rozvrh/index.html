@@ -48,32 +48,83 @@
         localStorage.setItem('PList', 'f')
     }
 
+    function TridaShow() {
+        var trida = document.querySelector('#id_trida').value;
+        hide()
+        if (trida == "ZR") {
+            document.querySelector('#volitelne1').hidden = false
+            document.querySelector('#volitelne2').hidden = false
+        };
+        if ((trida == "ZQ") || (trida == "ZI") || (trida == "ZJ") || (trida == 'ZN') || (trida == 'ZE') || (trida == 'ZF') || (trida == 'ZP') || (trida == 'ZL') || (trida == 'ZK') || (trida == 'ZG') || (trida == 'ZC') || (trida == 'ZD') || (trida == 'Z9') || (trida == 'ZA') || (trida == 'Z6') || (trida == 'Z7') || (trida == 'Z3') || (trida == 'Z4')) {
+            document.querySelector('#jazyk2').hidden = false
+        };
+        if ((trida == 'ZK') || (trida == 'Z6') || (trida == 'Z7')) {
+            document.querySelector('#SemS1').hidden = false
+            document.querySelector('#SemS2').hidden = false
+            document.querySelector('#SemS3').hidden = false
+        };
+        if ((trida == 'ZG') || (trida == 'Z3') || (trida == 'Z4')) {
+            document.querySelector('#SemO1').hidden = false
+            document.querySelector('#SemO2').hidden = false
+            document.querySelector('#SemO3').hidden = false
+            document.querySelector('#SemO4').hidden = false
+        }
+    };
+    function hide() {
+        document.querySelector('#jazyk2').hidden = true;
+        document.querySelector('#SemS1').hidden = true;
+        document.querySelector('#SemS2').hidden = true;
+        document.querySelector('#SemS3').hidden = true;
+        document.querySelector('#SemO1').hidden = true;
+        document.querySelector('#SemO2').hidden = true;
+        document.querySelector('#SemO3').hidden = true;
+        document.querySelector('#SemO4').hidden = true;
+        document.querySelector('#volitelne1').hidden = true;
+        document.querySelector('#volitelne2').hidden = true;
+        document.querySelector('#volitelne3').hidden = true;
+    }
 
     document.addEventListener("DOMContentLoaded", () => {
-        var PList = localStorage.getItem('PList')
+
+        const PList = localStorage.getItem('PList');
+        hide()
         if (PList.length > 1) {
             PList = JSON.parse(PList)
             document.querySelector('#id_trida').value = PList.trida;
             document.querySelector('#id_aj').value = PList.aj;
             document.querySelector('#id_jazyk2').value = PList.jazyk2;
-            document.querySelector('#id_Sem1').value = PList.Sem1;
-            document.querySelector('#id_Sem2').value = PList.Sem2;
-            document.querySelector('#id_Sem3').value = PList.Sem3;
+            document.querySelector('#id_SemS1').value = PList.SemS1;
+            document.querySelector('#id_SemS2').value = PList.SemS2;
+            document.querySelector('#id_SemS3').value = PList.SemS3;
+            document.querySelector('#id_SemO1').value = PList.SemO1;
+            document.querySelector('#id_SemO2').value = PList.SemO2;
+            document.querySelector('#id_SemO3').value = PList.SemO3;
+            document.querySelector('#id_SemO4').value = PList.SemO4;
+            document.querySelector('#id_volitelne1').value = PList.volitelne1;
+            document.querySelector('#id_volitelne2').value = PList.volitelne2;
+            document.querySelector('#id_volitelne3').value = PList.volitelne3;
             document.querySelector('#id_skupina').value = PList.skupina;
             document.querySelector('#id_gender').value = PList.gender;
         }
 
 
         document.querySelector('#form').onsubmit = () => {
-            const trida = document.querySelector('#id_trida').value;
+            trida = document.querySelector('#id_trida').value;
             const aj = document.querySelector('#id_aj').value;
             const jazyk2 = document.querySelector('#id_jazyk2').value;
-            const Sem1 = document.querySelector('#id_Sem1').value;
-            const Sem2 = document.querySelector('#id_Sem2').value;
-            const Sem3 = document.querySelector('#id_Sem3').value;
+            const SemS1 = document.querySelector('#id_SemS1').value;
+            const SemS2 = document.querySelector('#id_SemS2').value;
+            const SemS3 = document.querySelector('#id_SemS3').value;
+            const SemO1 = document.querySelector('#id_SemO1').value;
+            const SemO2 = document.querySelector('#id_SemO2').value;
+            const SemO3 = document.querySelector('#id_SemO3').value;
+            const SemO4 = document.querySelector('#id_SemO4').value;
+            const volitelne1 = document.querySelector('#id_volitelne1').value;
+            const volitelne2 = document.querySelector('#id_volitelne2').value;
+            const volitelne3 = document.querySelector('#id_volitelne3').value;
             const skupina = document.querySelector('#id_skupina').value;
             const gender = document.querySelector('#id_gender').value;
-            PList = {'trida': trida, 'aj': aj, 'jazyk2': jazyk2, 'Sem1': Sem1, 'Sem2': Sem2, 'Sem3': Sem3, 'skupina': skupina, 'gender': gender}
+            PList = {'trida': trida, 'aj': aj, 'jazyk2': jazyk2, 'SemS1': SemS1, 'SemS2': SemS2, 'SemS3': SemS3, 'SemO1': SemO1, 'SemO2': SemO2, 'SemO3': SemO3, 'SemO4': SemO4, 'volitelne1': volitelne1, 'volitelne2': volitelne2, 'volitelne3': volitelne3, 'skupina': skupina, 'gender': gender}
             PList = JSON.stringify(PList)
             localStorage.setItem('PList', PList)
         };
@@ -85,37 +136,65 @@
 <h1>Rozvrh z bakalářů do google kalendáře</h1>
 <form action="{% url 'rozvrh:index' %}" method="POST" id="form" class='bk-timetable-selects'>
     {% csrf_token %}
-    <div class='FormDiv'>
+    <div class='FormDiv' onchange="TridaShow()">
         <span class='bk-timetable-label'>Třída</span>
     {{ form.trida }}
     </div>
-    <div class='FormDiv'>
+    <div class='FormDiv' id='aj'>
         <span class='bk-timetable-label'>Angličtina</span>
         {{ form.aj }}
     </div>
-    <div class='FormDiv'>
+    <div class='FormDiv' id='jazyk2'>
        <span class='bk-timetable-label'>Cizí jazyk</span>
         {{ form.jazyk2 }}
     </div>
-    <div class='FormDiv'>
+    <div class='FormDiv' id='SemS1'>
         <span class='bk-timetable-label'>První seminář</span>
-        {{ form.Sem1 }}
+        {{ form.SemS1 }}
     </div>
-    <div class='FormDiv'>  
+    <div class='FormDiv' id='SemS2'>  
         <span class='bk-timetable-label'>Druhý seminář</span>
-        {{ form.Sem2 }}
+        {{ form.SemS2 }}
     </div>
-    <div class='FormDiv'>
+    <div class='FormDiv' id='SemS3'>
         <span class='bk-timetable-label'>Třetí seminář</span>
-        {{ form.Sem3 }}
+        {{ form.SemS3 }}
     </div>
-    <div class='FormDiv'>
+    <div class='FormDiv' id='SemO1'>
+        <span class='bk-timetable-label'>První seminář</span>
+        {{ form.SemO1 }}
+    </div>
+    <div class='FormDiv' id="SemO2">  
+        <span class='bk-timetable-label'>Druhý seminář</span>
+        {{ form.SemO2 }}
+    </div>
+    <div class='FormDiv' id="SemO3">
+        <span class='bk-timetable-label'>Třetí seminář</span>
+        {{ form.SemO3 }}
+    </div>
+    <div class='FormDiv' id="SemO4">
+        <span class='bk-timetable-label'>Čtvrtý seminář</span>
+        {{ form.SemO4 }}
+    </div>
+    <div class='FormDiv' id="skupina">
         <span class='bk-timetable-label'>Skupina</span>
         {{ form.skupina }}
     </div>
-    <div class='FormDiv'>
+    <div class='FormDiv' id="gender">
         <span class='bk-timetable-label'>Pohlaví</span>
         {{ form.gender }}
+    </div>
+    <div class='FormDiv' id="volitelne1">
+        <span class='bk-timetable-label'>Volitelné předměty 1</span>
+        {{ form.volitelne1 }}
+    </div>
+    <div class='FormDiv' id="volitelne2">
+        <span class='bk-timetable-label'>Volitelné předměty 2</span>
+        {{ form.volitelne2 }}
+    </div>
+    <div class='FormDiv' id="volitelne3">
+        <span class='bk-timetable-label'>Volitelné předměty 3</span>
+        {{ form.volitelne3 }}
     </div>
     {% if form %}
     <input type="submit">
