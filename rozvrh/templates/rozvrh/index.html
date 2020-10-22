@@ -2,6 +2,7 @@
 
 {% block head %}
 <title>Rozvrh</title>
+<meta name="google-site-verification" content="8DzPfbaBLvEflsv_ZFixTJzsuHEx7QpqF_G7vNAMaRU" />
 <style>
     li {
         font-size: large;
@@ -137,6 +138,8 @@
 
 {% block body %}
 <h1>Rozvrh z bakalářů do google kalendáře</h1>
+<p>Our app will allow you to insert your classes from our school timetable into your Google calendar. Using Google API, the app will first check if you have any classes from us in your calendar, if you do it will delete the future ones. Then it will go to our school timetable website, get your classe's timetable and insert the classes into your google calendar.</p>
+
 <form action="{% url 'rozvrh:index' %}" method="POST" id="form" class='bk-timetable-selects'>
     {% csrf_token %}
     <div class='FormDiv' onchange="TridaShow()">
@@ -204,6 +207,7 @@
     {% endif %}
 </form>
 <h3>{{ worked }}</h3>
+<a href="{% url 'rozvrh:privacy' %}">Privacy Policy</a>
 
 {% endblock %}
 
