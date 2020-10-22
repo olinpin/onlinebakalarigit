@@ -83,47 +83,50 @@
         document.querySelector('#volitelne2').hidden = true;
         document.querySelector('#volitelne3').hidden = true;
     }
-
+    function load(Plist) {
+        document.querySelector('#id_trida').value = PList.trida;
+        document.querySelector('#id_aj').value = PList.aj;
+        document.querySelector('#id_jazyk2').value = PList.jazyk2;
+        document.querySelector('#id_SemS1').value = PList.SemS1;
+        document.querySelector('#id_SemS2').value = PList.SemS2;
+        document.querySelector('#id_SemS3').value = PList.SemS3;
+        document.querySelector('#id_SemO1').value = PList.SemO1;
+        document.querySelector('#id_SemO2').value = PList.SemO2;
+        document.querySelector('#id_SemO3').value = PList.SemO3;
+        document.querySelector('#id_SemO4').value = PList.SemO4;
+        document.querySelector('#id_volitelne1').value = PList.volitelne1;
+        document.querySelector('#id_volitelne2').value = PList.volitelne2;
+        document.querySelector('#id_volitelne3').value = PList.volitelne3;
+        document.querySelector('#id_skupina').value = PList.skupina;
+        document.querySelector('#id_gender').value = PList.gender;
+    }
     document.addEventListener("DOMContentLoaded", () => {
-
-        const PList = localStorage.getItem('PList');
+        var PList = localStorage.getItem('PList');
         hide()
         if (PList.length > 1) {
             PList = JSON.parse(PList)
-            document.querySelector('#id_trida').value = PList.trida;
-            document.querySelector('#id_aj').value = PList.aj;
-            document.querySelector('#id_jazyk2').value = PList.jazyk2;
-            document.querySelector('#id_SemS1').value = PList.SemS1;
-            document.querySelector('#id_SemS2').value = PList.SemS2;
-            document.querySelector('#id_SemS3').value = PList.SemS3;
-            document.querySelector('#id_SemO1').value = PList.SemO1;
-            document.querySelector('#id_SemO2').value = PList.SemO2;
-            document.querySelector('#id_SemO3').value = PList.SemO3;
-            document.querySelector('#id_SemO4').value = PList.SemO4;
-            document.querySelector('#id_volitelne1').value = PList.volitelne1;
-            document.querySelector('#id_volitelne2').value = PList.volitelne2;
-            document.querySelector('#id_volitelne3').value = PList.volitelne3;
-            document.querySelector('#id_skupina').value = PList.skupina;
-            document.querySelector('#id_gender').value = PList.gender;
+            load(PList)
+
         }
 
 
         document.querySelector('#form').onsubmit = () => {
+            console.log("submited")
             trida = document.querySelector('#id_trida').value;
-            const aj = document.querySelector('#id_aj').value;
-            const jazyk2 = document.querySelector('#id_jazyk2').value;
-            const SemS1 = document.querySelector('#id_SemS1').value;
-            const SemS2 = document.querySelector('#id_SemS2').value;
-            const SemS3 = document.querySelector('#id_SemS3').value;
-            const SemO1 = document.querySelector('#id_SemO1').value;
-            const SemO2 = document.querySelector('#id_SemO2').value;
-            const SemO3 = document.querySelector('#id_SemO3').value;
-            const SemO4 = document.querySelector('#id_SemO4').value;
-            const volitelne1 = document.querySelector('#id_volitelne1').value;
-            const volitelne2 = document.querySelector('#id_volitelne2').value;
-            const volitelne3 = document.querySelector('#id_volitelne3').value;
-            const skupina = document.querySelector('#id_skupina').value;
-            const gender = document.querySelector('#id_gender').value;
+            var aj = document.querySelector('#id_aj').value;
+            var jazyk2 = document.querySelector('#id_jazyk2').value;
+            var SemS1 = document.querySelector('#id_SemS1').value;
+            var SemS2 = document.querySelector('#id_SemS2').value;
+            var SemS3 = document.querySelector('#id_SemS3').value;
+            var SemO1 = document.querySelector('#id_SemO1').value;
+            var SemO2 = document.querySelector('#id_SemO2').value;
+            var SemO3 = document.querySelector('#id_SemO3').value;
+            var SemO4 = document.querySelector('#id_SemO4').value;
+            var volitelne1 = document.querySelector('#id_volitelne1').value;
+            var volitelne2 = document.querySelector('#id_volitelne2').value;
+            var volitelne3 = document.querySelector('#id_volitelne3').value;
+            var skupina = document.querySelector('#id_skupina').value;
+            var gender = document.querySelector('#id_gender').value;
             PList = {'trida': trida, 'aj': aj, 'jazyk2': jazyk2, 'SemS1': SemS1, 'SemS2': SemS2, 'SemS3': SemS3, 'SemO1': SemO1, 'SemO2': SemO2, 'SemO3': SemO3, 'SemO4': SemO4, 'volitelne1': volitelne1, 'volitelne2': volitelne2, 'volitelne3': volitelne3, 'skupina': skupina, 'gender': gender}
             PList = JSON.stringify(PList)
             localStorage.setItem('PList', PList)
