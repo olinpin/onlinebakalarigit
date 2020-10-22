@@ -215,6 +215,7 @@ def index(request):
         "form": RozvrhForm(), 
         'worked': ""
     })
+    
 def rozvrhAdd(request):
     PList = request.session['PList']
     trida = request.session['trida']
