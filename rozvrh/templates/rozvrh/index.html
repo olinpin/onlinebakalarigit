@@ -83,31 +83,31 @@
         document.querySelector('#volitelne2').hidden = true;
         document.querySelector('#volitelne3').hidden = true;
     }
-    function load(Plist) {
-        document.querySelector('#id_trida').value = PList.trida;
-        document.querySelector('#id_aj').value = PList.aj;
-        document.querySelector('#id_jazyk2').value = PList.jazyk2;
-        document.querySelector('#id_SemS1').value = PList.SemS1;
-        document.querySelector('#id_SemS2').value = PList.SemS2;
-        document.querySelector('#id_SemS3').value = PList.SemS3;
-        document.querySelector('#id_SemO1').value = PList.SemO1;
-        document.querySelector('#id_SemO2').value = PList.SemO2;
-        document.querySelector('#id_SemO3').value = PList.SemO3;
-        document.querySelector('#id_SemO4').value = PList.SemO4;
-        document.querySelector('#id_volitelne1').value = PList.volitelne1;
-        document.querySelector('#id_volitelne2').value = PList.volitelne2;
-        document.querySelector('#id_volitelne3').value = PList.volitelne3;
-        document.querySelector('#id_skupina').value = PList.skupina;
-        document.querySelector('#id_gender').value = PList.gender;
-    }
+
     document.addEventListener("DOMContentLoaded", () => {
         var PList = localStorage.getItem('PList');
         
+        console.log(PList.length)
+        hide()
         if (PList.length > 1) {
             PList = JSON.parse(PList)
-            load(PList)
+            document.querySelector('#id_trida').value = PList.trida;
+            document.querySelector('#id_aj').value = PList.aj;
+            document.querySelector('#id_jazyk2').value = PList.jazyk2;
+            document.querySelector('#id_SemS1').value = PList.SemS1;
+            document.querySelector('#id_SemS2').value = PList.SemS2;
+            document.querySelector('#id_SemS3').value = PList.SemS3;
+            document.querySelector('#id_SemO1').value = PList.SemO1;
+            document.querySelector('#id_SemO2').value = PList.SemO2;
+            document.querySelector('#id_SemO3').value = PList.SemO3;
+            document.querySelector('#id_SemO4').value = PList.SemO4;
+            document.querySelector('#id_volitelne1').value = PList.volitelne1;
+            document.querySelector('#id_volitelne2').value = PList.volitelne2;
+            document.querySelector('#id_volitelne3').value = PList.volitelne3;
+            document.querySelector('#id_skupina').value = PList.skupina;
+            document.querySelector('#id_gender').value = PList.gender;
+            TridaShow()
         }
-        hide()
 
 
         document.querySelector('#form').onsubmit = () => {
