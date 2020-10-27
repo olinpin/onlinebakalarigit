@@ -110,7 +110,12 @@ def getTimeTable(Name, Sem, creds):
             else:
                 room = int(room)
         except:
-            continue
+            if data_detail['type'] == 'absent':
+                teacher = ""
+                room = "Volno"
+                subjecttext = "Neni hodina | " + subjecttext
+            else:
+                continue
 
         try:
             jaz = data_detail["group"]
@@ -170,7 +175,7 @@ def getTimeTable(Name, Sem, creds):
             timenow = timenow[0:]
         now = datenow+'T'+timenow
         if now > start:
-            print(predmet, "SKIPPED")
+            print(predmet, start, "SKIPPED")
             continue
 
         addCalendar(predmet, start, end, room, teacher, creds)
@@ -205,4 +210,4 @@ def delete(creds):
 
 
 #if __name__ == "__main__":
-   #getTimeTable("ZK", ['aj5', 'nej2', 'fys1', 'mas2', 'eps3', ''])#the ' ' has to be there, in order for it to work, jaz = ' '
+   #getTimeTable("ZK", ['aj5', 'nej2', 'fys1', 'mas2', 'eps3', ''], '') #the '' has to be there, in order for it to work, jaz = ' '
