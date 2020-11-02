@@ -80,11 +80,10 @@ def addCalendar(predmet, start, end, room, about, creds):
         client_secret = creds["client_secret"],
         scopes = creds["scopes"])
     CAL = build('calendar', 'v3', credentials=credentials)
-    GMT_OFF = "-01:00"
     EVENT = {
         'summary': f"{predmet}",
-        'start': {f'dateTime': f'{start}', "timeZone": "UTC+2"},
-        'end': {'dateTime': f'{end}', "timeZone": "UTC+2"},
+        'start': {f'dateTime': f'{start}', "timeZone": "UTC+1"},
+        'end': {'dateTime': f'{end}', "timeZone": "UTC+1"},
         'location': f'{room}',
         'description': f'{about}',
     }
