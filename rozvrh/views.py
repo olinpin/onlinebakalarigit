@@ -11,7 +11,7 @@ import google.oauth2.credentials
 import google_auth_oauthlib.flow
 
 
-
+# Bunch of classes needed for the user to choose from
 classes = [
     ("ZP","1A"),
     ("ZQ","1PA"),
@@ -159,7 +159,7 @@ volitelne3 = [
     ("desn", "desn"),
 ]
 
-# Create your views here.
+# Created the form
 class RozvrhForm(forms.Form):
     trida = forms.ChoiceField(choices=classes, label="Třída")
     aj = forms.ChoiceField(choices=aj, label="Jazyková skupina")
@@ -181,6 +181,7 @@ class RozvrhForm(forms.Form):
 def index(request):
     if request.method == 'POST':
         form = RozvrhForm(request.POST)
+        # clean all data and 
         if form.is_valid():
             trida = form.cleaned_data['trida']
             aj = form.cleaned_data['aj']
@@ -197,11 +198,11 @@ def index(request):
             volitelne3 = form.cleaned_data['volitelne3']
             skupina = form.cleaned_data['skupina']
             gender = form.cleaned_data["gender"]
+            # create a list and put it in session
             PList = [aj, jazyk2, SemS1, SemS2, SemS3, SemO1, SemO2, SemO3, SemO4, volitelne1, volitelne2, volitelne3, skupina, gender, '']
             request.session['trida'] = trida
             request.session['PList'] = PList
-        print(request.session['PList'])
-        #if 'creds' not in request.session:
+        # create the authorization and save it in session
         SCOPES = 'https://www.googleapis.com/auth/calendar'
         redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
         flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', SCOPES, redirect_uri=redirect_uri)
@@ -217,9 +218,11 @@ def index(request):
     })
     
 def rozvrhAdd(request):
+    # get the lists from session
     PList = request.session['PList']
     trida = request.session['trida']
     state = request.session['state']
+    # redirect user to google to log in and allow user to add it to their calendar
     authorization_response = request.build_absolute_uri()
     SCOPES = 'https://www.googleapis.com/auth/calendar'
     redirect_uri = 'https://bakalaricz.herokuapp.com/rozvrh/form'
@@ -235,6 +238,7 @@ def rozvrhAdd(request):
         'client_secret': creds.client_secret,
         'scopes': creds.scopes
     }
+    # call function to scrape the timetable from the web
     getTimeTable(trida, PList, request.session['creds'])
     return render(request, "rozvrh/rozvrh.html")
 

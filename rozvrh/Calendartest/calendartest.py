@@ -12,6 +12,7 @@ import webbrowser
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 
+# list of classes
 classes = [
     "Český jazyk",
     "Český jazyk a literatura",
@@ -70,8 +71,9 @@ classes = [
 ]
 
    
-
+# add classes to the calendar
 def addCalendar(predmet, start, end, room, about, creds):
+    # create the credentials
     credentials = google.oauth2.credentials.Credentials(
         creds["token"],
         refresh_token = creds["refresh_token"],
@@ -79,7 +81,9 @@ def addCalendar(predmet, start, end, room, about, creds):
         client_id = creds["client_id"],
         client_secret = creds["client_secret"],
         scopes = creds["scopes"])
+    # contact the calendar
     CAL = build('calendar', 'v3', credentials=credentials)
+    # create the event
     EVENT = {
         'summary': f"{predmet}",
         'start': {f'dateTime': f'{start}', "timeZone": "UTC+1"},
@@ -87,19 +91,23 @@ def addCalendar(predmet, start, end, room, about, creds):
         'location': f'{room}',
         'description': f'{about}',
     }
-
+    # insert the event into the calendar
     e = CAL.events().insert(calendarId='primary', body=EVENT).execute()
     
 
 
 def getTimeTable(Name, Sem, creds):
+    # get the timetable
     r = requests.get(f"https://gym-nymburk.bakalari.cz/bakaweb/Timetable/public/Actual/Class/{ Name }")
     soup = BeautifulSoup(r.text, "html.parser")
     finder = soup.find_all('div', attrs={"class":'day-item-hover'})
+    # delete previous calendar entries from the website that are in the future
     delete(creds)
+    # loop through every class
     for x in finder:
         data_detail = x['data-detail'].replace('null', '"Nothing"')
         data_detail = eval(data_detail)
+        # set each attribute to the right variable
         subjecttext = data_detail['subjecttext']
         try:
             teacher = data_detail['teacher']
@@ -115,22 +123,22 @@ def getTimeTable(Name, Sem, creds):
                 subjecttext = "Neni hodina | " + subjecttext
             else:
                 continue
-
         try:
             jaz = data_detail["group"]
         except:
             jaz = ''
         if jaz not in Sem:
             continue
+        # divide the subject and time
         splited = subjecttext.split(' |')
         predmet = splited[0]
         date = splited[1]
         try:
             time = splited[2]
         except:
-            predmet = "ODPADLÁ HODINA"
-            time = splited[1]
-            date = splited[0]
+            # if the class is not there, skip
+            continue
+        # create the right time format
         date = date.replace('po', '')
         date = date.replace('út', '')
         date = date.replace('st', '')
@@ -161,7 +169,7 @@ def getTimeTable(Name, Sem, creds):
         else:
             end = end[0] + "T" + end[1]
 
-        
+        # skip past classes
         if type(room) == int:
             room = "Učebna " + str(room)
         now = datetime.datetime.utcnow() + datetime.timedelta(hours=2)
@@ -181,7 +189,9 @@ def getTimeTable(Name, Sem, creds):
         print(predmet, room, teacher, start) # start, end,
 
 
+# delete previous calendar entries from the website that are in the future
 def delete(creds):
+    # get and create credentials
     credentials = google.oauth2.credentials.Credentials(
         creds["token"],
         refresh_token = creds["refresh_token"],
@@ -189,12 +199,14 @@ def delete(creds):
         client_id = creds["client_id"],
         client_secret = creds["client_secret"],
         scopes = creds["scopes"])
+    # connect to the calendar
     CAL = build('calendar', 'v3', credentials=credentials)
     now = datetime.datetime.now().isoformat()
     now = now.split('.')[0] + 'Z'
+    # get the list of all events in the calendar
     e = CAL.events().list(calendarId='primary', timeMin=now).execute()
     items = e['items']
-    
+    # delete the events
     for z in items:
         if z['status'] == 'confirmed':
             if z['summary'] in classes:
