@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import json
 import sys
 import webbrowser
+from dateutil.tz import gettz
 
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
@@ -83,11 +84,16 @@ def addCalendar(predmet, start, end, room, about, creds):
         scopes = creds["scopes"])
     # contact the calendar
     CAL = build('calendar', 'v3', credentials=credentials)
+    # check for daylight savings
+    time = datetime.datetime.now(gettz("Europe/Prague")).isoformat().split("+")[1]
+    tz = "UTC+1"
+    if time == "02:00":
+        tz = "UTC+2"
     # create the event
     EVENT = {
         'summary': f"{predmet}",
-        'start': {f'dateTime': f'{start}', "timeZone": "UTC+1"},
-        'end': {'dateTime': f'{end}', "timeZone": "UTC+1"},
+        'start': {f'dateTime': f'{start}', "timeZone": f"{tz}"},
+        'end': {'dateTime': f'{end}', "timeZone": f"{tz}"},
         'location': f'{room}',
         'description': f'{about}',
     }
