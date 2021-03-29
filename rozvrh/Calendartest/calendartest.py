@@ -123,12 +123,12 @@ def getTimeTable(Name, Sem, creds):
             else:
                 room = int(room)
         except:
-            if data_detail['type'] == 'absent':
+            """if data_detail['type'] == 'absent':
                 teacher = ""
                 room = "Volno"
                 subjecttext = "Neni hodina | " + subjecttext
-            else:
-                continue
+            else:"""
+            continue
         try:
             jaz = data_detail["group"]
         except:
